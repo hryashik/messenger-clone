@@ -1,6 +1,6 @@
 .main {
-   width: 350px;
-   padding: 20px;
+   width: 400px;
+   padding: 40px 20px;
    background-color: white;
    display: flex;
    flex-direction: column;
@@ -31,7 +31,7 @@
    span::before {
       content: " ";
       background: #c4c4c4;
-      width: 80px;
+      width: 100px;
       height: 1px;
       top: 10px;
       left: 10px;
@@ -41,10 +41,10 @@
    span::after {
       content: " ";
       background: #c4c4c4;
-      width: 80px;
+      width: 100px;
       height: 1px;
       top: 10px;
-      left: 220px;
+      left: 250px;
       position: absolute;
    }
 }
@@ -55,7 +55,7 @@
    align-items: center;
 
    button {
-      padding: 3px 5px;
+      padding: 7px 5px;
       outline: none;
       border: 1px solid rgb(228, 228, 228);
       transition: .3s;
@@ -69,6 +69,20 @@
          cursor: pointer;
          transition: .3s;
          background-color: rgb(228, 228, 228);
+      }
+   }
+}
+
+.changeForm {
+   margin: 30px auto 0;
+   display: flex;
+
+   a {
+      margin-left: 5px;
+      text-decoration: underline;
+
+      &:hover {
+         cursor: pointer;
       }
    }
 }

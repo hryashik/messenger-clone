@@ -1,8 +1,7 @@
 "use client";
 import { Button, Input, TextField } from "@mui/material";
-import { useState } from "react";
+import { RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./AuthForm.module.scss";
-import { AuthSocialButton } from "../AuthSocialButton/AuthSocialButton";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
@@ -17,22 +16,39 @@ export function AuthForm() {
    return (
       <div className={styles.main}>
          <form onSubmit={onSubmitHandler}>
+            {variant === "REGISTER" && (
+               <>
+                  <h4>Username</h4>
+                  <TextField
+                     autoFocus={true}
+                     autoComplete="false"
+                     type="text"
+                     size="small"
+                     className={styles.input}
+                     variant="outlined"
+                     id="1"
+                  />
+               </>
+            )}
             <h4>Email</h4>
             <TextField
+               autoFocus={true}
+               type="email"
                size="small"
                className={styles.input}
                variant="outlined"
-               id="1"
+               id="2"
             />
             <h4>Password</h4>
             <TextField
+               type="password"
                size="small"
                className={styles.input}
-               id="2"
+               id="3"
                variant="outlined"
             />
             <Button size="small" variant="contained" type="submit">
-               Sign in
+               {variant === "LOGIN" ? "Sign in" : "Register"}
             </Button>
          </form>
          <div className={styles.continue}>
@@ -49,6 +65,20 @@ export function AuthForm() {
                   className={styles.socialIcons__item}
                />
             </button>
+         </div>
+         <div className={styles.changeForm}>
+            <p>
+               {variant === "LOGIN"
+                  ? "New to Messenger?"
+                  : "Already have an account?"}
+            </p>
+            <a
+               onClick={() =>
+                  setVariant(prev => (prev === "LOGIN" ? "REGISTER" : "LOGIN"))
+               }
+            >
+               {variant === "LOGIN" ? "Create an account" : "Login"}
+            </a>
          </div>
       </div>
    );
