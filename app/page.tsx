@@ -5,9 +5,16 @@ import { AuthForm } from "./components/AuthForm/AuthForm";
 export default function Home() {
    return (
       <div className={styles.main}>
-         <div style={{ marginBottom: "10px" }}>
-            <Image src={"/images/logo.png"} alt="logo" width={60} height={60} />
+         <div>
+            <Image
+               src={"/images/logo.png"}
+               priority
+               alt="logo"
+               width={60}
+               height={60}
+            />
          </div>
+         <h1>Sign in to your account</h1>
          <AuthForm />
       </div>
    );

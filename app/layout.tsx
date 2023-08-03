@@ -1,19 +1,25 @@
-import './globals.scss'
-import type { Metadata } from 'next'
+import "./globals.scss";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Messenger Clone',
-    description: 'Messenger Clone',
-}
+   title: "Messenger Clone",
+   description: "Messenger Clone",
+};
 
 export default function RootLayout({
-    children,
+   children,
 }: {
-    children: React.ReactNode
+   children: React.ReactNode;
 }) {
-    return (
-        <html lang='en'>
-            <body>{children}</body>
-        </html>
-    )
+   return (
+      <html lang="en">
+         <head>
+            <link
+               rel="stylesheet"
+               href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            />
+         </head>
+         <body>{children}</body>
+      </html>
+   );
 }

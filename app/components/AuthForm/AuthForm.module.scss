@@ -1,5 +1,74 @@
 .main {
-   height: 300px;
-   width: 400px;
+   width: 350px;
+   padding: 20px;
    background-color: white;
+   display: flex;
+   flex-direction: column;
+   border-radius: 8px;
+   box-shadow: 0px 0px 3px 1px grey;
+
+   h4 {
+      margin-bottom: 5px;
+      font-size: 14px;
+   }
+
+   button {
+      width: 100%;
+      margin-left: auto;
+   }
+}
+
+.input {
+   margin-bottom: 15px;
+}
+
+.continue {
+   font-family: 'Roboto';
+   position: relative;
+   text-align: center;
+   margin: 20px 0;
+
+   span::before {
+      content: " ";
+      background: #c4c4c4;
+      width: 80px;
+      height: 1px;
+      top: 10px;
+      left: 10px;
+      position: absolute;
+   }
+
+   span::after {
+      content: " ";
+      background: #c4c4c4;
+      width: 80px;
+      height: 1px;
+      top: 10px;
+      left: 220px;
+      position: absolute;
+   }
+}
+
+.socialIcons {
+   display: flex;
+   width: 100%;
+   align-items: center;
+
+   button {
+      padding: 3px 5px;
+      outline: none;
+      border: 1px solid rgb(228, 228, 228);
+      transition: .3s;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+
+      &:hover {
+         cursor: pointer;
+         transition: .3s;
+         background-color: rgb(228, 228, 228);
+      }
+   }
 }
