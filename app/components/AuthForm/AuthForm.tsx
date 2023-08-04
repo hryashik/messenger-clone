@@ -1,6 +1,6 @@
 "use client";
 import { Button, Input, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./AuthForm.module.scss";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -11,6 +11,7 @@ import {
    passwordOptions,
    usernameOptions,
 } from "./fields-form";
+import Link from "next/link";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -75,17 +76,22 @@ export function AuthForm() {
                id="3"
                variant="outlined"
             />
-            <Button size="small" variant="contained" type="submit">
-               {variant === "LOGIN" ? "Sign in" : "Register"}
+            <Button
+               size="small"
+               variant="contained"
+               type="submit"
+               disabled={!!Object.keys(errors).length}
+            >
+               {variant === "LOGIN" ? "LOGIN" : "Register"}
             </Button>
          </form>
          <div className={styles.continue}>
             <span>Or continue with</span>
          </div>
          <div className={styles.socialIcons}>
-            <button type="button">
-               <GitHubIcon fontSize="medium" />
-            </button>
+            <Link href={"/github"} type="button">
+               <GitHubIcon fontSize="medium" color="inherit" />
+            </Link>
             <button type="button">
                <GoogleIcon
                   fontSize="medium"
