@@ -19,11 +19,17 @@
 }
 
 .input {
+   transition: .5s;
    margin-bottom: 15px;
+
+   p {
+      font-size: 13px;
+      font-weight: bold;
+      color: rgb(184, 1, 1);
+   }
 }
 
 .continue {
-   font-family: 'Roboto';
    position: relative;
    text-align: center;
    margin: 20px 0;

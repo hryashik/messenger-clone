@@ -1,25 +1,47 @@
 "use client";
 import { Button, Input, TextField } from "@mui/material";
-import { RefObject, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styles from "./AuthForm.module.scss";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {
+   Inputs,
+   emailOptions,
+   passwordOptions,
+   usernameOptions,
+} from "./fields-form";
 
 type Variant = "LOGIN" | "REGISTER";
 
 export function AuthForm() {
    const [variant, setVariant] = useState<Variant>("LOGIN");
-   function onSubmitHandler(e: any) {
-      e.preventDefault();
-      console.log(e);
-   }
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<Inputs>();
+   const onSubmit: SubmitHandler<Inputs> = data => {
+      if (variant === "LOGIN") {
+         // Signin request
+      } else {
+         // Sign up request
+      }
+      console.log(data);
+   };
    return (
       <div className={styles.main}>
-         <form onSubmit={onSubmitHandler}>
+         <form onSubmit={handleSubmit(onSubmit)}>
             {variant === "REGISTER" && (
                <>
                   <h4>Username</h4>
                   <TextField
+                     {...register("username", {
+                        required: variant === "REGISTER" ? true : false,
+                        ...usernameOptions,
+                     })}
+                     color={errors.username && "error"}
+                     helperText={errors.username && errors.username.message}
                      autoFocus={true}
                      autoComplete="false"
                      type="text"
@@ -32,15 +54,21 @@ export function AuthForm() {
             )}
             <h4>Email</h4>
             <TextField
+               {...register("email", emailOptions)}
                autoFocus={true}
                type="email"
                size="small"
                className={styles.input}
                variant="outlined"
                id="2"
+               color={errors.email && "error"}
+               helperText={errors.email && errors.email.message}
             />
             <h4>Password</h4>
             <TextField
+               {...register("password", passwordOptions)}
+               color={errors.password && "error"}
+               helperText={errors.password && errors.password.message}
                type="password"
                size="small"
                className={styles.input}
