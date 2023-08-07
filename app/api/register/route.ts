@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function POST(request: Request) {
    try {
@@ -22,6 +23,9 @@ export async function POST(request: Request) {
 
       return NextResponse.json(user);
    } catch (error: any) {
+      if (error.code === "P2002") {
+         return new NextResponse("Credentials is taken", { status: 403 });
+      }
       console.log(error, "REGISTRATION_ERROR");
       return new NextResponse("Internal Error", { status: 500 });
    }

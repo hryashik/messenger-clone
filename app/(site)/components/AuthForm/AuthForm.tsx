@@ -1,7 +1,7 @@
 "use client";
-import { Button, Input, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styles from "./AuthForm.module.scss";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -12,28 +12,71 @@ import {
    passwordOptions,
    usernameOptions,
 } from "./fields-form";
-import Link from "next/link";
+import { __ApiPreviewProps } from "next/dist/server/api-utils";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
 export function AuthForm() {
    const [variant, setVariant] = useState<Variant>("LOGIN");
    const [isLoading, setIsLoading] = useState(false);
+
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm<Inputs>();
+
    const onSubmit: SubmitHandler<Inputs> = data => {
       if (variant === "REGISTER") {
          setIsLoading(true);
-         axios.post("/api/register", {
-            name: data.username,
-            password: data.password,
-            email: data.email,
-         });
+         axios
+            .post("/api/register", {
+               name: data.username,
+               password: data.password,
+               email: data.email,
+            })
+            .catch(error => {
+               if (error.response.data === "Credentials is taken") {
+                  toast.error(error.response.data);
+               } else {
+                  toast.error("Something was wrong");
+               }
+            })
+            .finally(() => setIsLoading(false));
       }
-      if (variant === "LOGIN") console.log(data);
+      if (variant === "LOGIN") {
+         setIsLoading(true);
+         signIn("credentials", {
+            name: data.username,
+            email: data.email,
+            password: data.password,
+            redirect: false,
+         })
+            .then(response => {
+               if (response?.error) {
+                  toast.error(response.error);
+               }
+               if (response?.ok && !response.error) {
+                  toast.success("Logged in!");
+               }
+            })
+            .finally(() => setIsLoading(false));
+      }
+   };
+   const onSocialAction = (action: string) => {
+      setIsLoading(true);
+      signIn(action, { redirect: false })
+         .then(response => {
+            if (response?.error) {
+               toast.error("Invalid credentials");
+            }
+            if (response?.ok && !response.error) {
+               toast.error("Logged in!");
+            }
+         })
+         .finally(() => setIsLoading(false));
    };
    return (
       <div className={styles.main}>
@@ -94,10 +137,10 @@ export function AuthForm() {
             <span>Or continue with</span>
          </div>
          <div className={styles.socialIcons}>
-            <Link href={"/github"} type="button">
+            <button type="button" onClick={() => onSocialAction("github")}>
                <GitHubIcon fontSize="medium" color="inherit" />
-            </Link>
-            <button type="button">
+            </button>
+            <button type="button" onClick={() => onSocialAction("google")}>
                <GoogleIcon
                   fontSize="medium"
                   color="primary"

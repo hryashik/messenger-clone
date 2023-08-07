@@ -1,3 +1,4 @@
+import { ToasterContext } from "./context/ToasterContext";
 import "./globals.scss";
 import type { Metadata } from "next";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
             />
          </head>
-         <body>{children}</body>
+         <body>
+            <ToasterContext />
+            {children}
+         </body>
       </html>
    );
 }
