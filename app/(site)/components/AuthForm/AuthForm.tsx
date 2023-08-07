@@ -1,5 +1,6 @@
 "use client";
 import { Button, Input, TextField } from "@mui/material";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import styles from "./AuthForm.module.scss";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -17,18 +18,22 @@ type Variant = "LOGIN" | "REGISTER";
 
 export function AuthForm() {
    const [variant, setVariant] = useState<Variant>("LOGIN");
+   const [isLoading, setIsLoading] = useState(false);
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm<Inputs>();
    const onSubmit: SubmitHandler<Inputs> = data => {
-      if (variant === "LOGIN") {
-         // Signin request
-      } else {
-         // Sign up request
+      if (variant === "REGISTER") {
+         setIsLoading(true);
+         axios.post("/api/register", {
+            name: data.username,
+            password: data.password,
+            email: data.email,
+         });
       }
-      console.log(data);
+      if (variant === "LOGIN") console.log(data);
    };
    return (
       <div className={styles.main}>
@@ -80,7 +85,7 @@ export function AuthForm() {
                size="small"
                variant="contained"
                type="submit"
-               disabled={!!Object.keys(errors).length}
+               disabled={!!Object.keys(errors).length || isLoading}
             >
                {variant === "LOGIN" ? "LOGIN" : "Register"}
             </Button>
