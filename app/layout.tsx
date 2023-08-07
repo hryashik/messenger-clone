@@ -1,3 +1,4 @@
+import { AuthContext } from "./context/AuthContext";
 import { ToasterContext } from "./context/ToasterContext";
 import "./globals.scss";
 import type { Metadata } from "next";
@@ -21,8 +22,10 @@ export default function RootLayout({
             />
          </head>
          <body>
-            <ToasterContext />
-            {children}
+            <AuthContext>
+               <ToasterContext />
+               {children}
+            </AuthContext>
          </body>
       </html>
    );

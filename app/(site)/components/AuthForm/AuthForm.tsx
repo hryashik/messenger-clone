@@ -1,7 +1,7 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./AuthForm.module.scss";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -12,15 +12,23 @@ import {
    passwordOptions,
    usernameOptions,
 } from "./fields-form";
-import { __ApiPreviewProps } from "next/dist/server/api-utils";
 import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Variant = "LOGIN" | "REGISTER";
 
 export function AuthForm() {
+   const session = useSession();
+   const router = useRouter();
    const [variant, setVariant] = useState<Variant>("LOGIN");
    const [isLoading, setIsLoading] = useState(false);
+
+   useEffect(() => {
+      if (session?.status === "authenticated") {
+         router.push("/users");
+      }
+   }, [session?.status, router]);
 
    const {
       register,
@@ -32,11 +40,8 @@ export function AuthForm() {
       if (variant === "REGISTER") {
          setIsLoading(true);
          axios
-            .post("/api/register", {
-               name: data.username,
-               password: data.password,
-               email: data.email,
-            })
+            .post("/api/register", data)
+            .then(() => signIn("credentials", data))
             .catch(error => {
                if (error.response.data === "Credentials is taken") {
                   toast.error(error.response.data);
@@ -49,9 +54,7 @@ export function AuthForm() {
       if (variant === "LOGIN") {
          setIsLoading(true);
          signIn("credentials", {
-            name: data.username,
-            email: data.email,
-            password: data.password,
+            ...data,
             redirect: false,
          })
             .then(response => {
@@ -60,6 +63,7 @@ export function AuthForm() {
                }
                if (response?.ok && !response.error) {
                   toast.success("Logged in!");
+                  router.push('/users')
                }
             })
             .finally(() => setIsLoading(false));
@@ -83,14 +87,14 @@ export function AuthForm() {
          <form onSubmit={handleSubmit(onSubmit)}>
             {variant === "REGISTER" && (
                <>
-                  <h4>Username</h4>
+                  <h4>Name</h4>
                   <TextField
-                     {...register("username", {
+                     {...register("name", {
                         required: variant === "REGISTER" ? true : false,
                         ...usernameOptions,
                      })}
-                     color={errors.username && "error"}
-                     helperText={errors.username && errors.username.message}
+                     color={errors.name && "error"}
+                     helperText={errors.name && errors.name.message}
                      autoFocus={true}
                      autoComplete="false"
                      type="text"

@@ -1,7 +1,7 @@
 import { RegisterOptions } from "react-hook-form";
 
 export type Inputs = {
-   username?: string;
+   name?: string;
    email: "string";
    password: "string";
 };
@@ -29,7 +29,7 @@ export const passwordOptions: RegisterOptions<Inputs, "password"> = {
       message: "Password must contain no more than 20 characters",
    },
 };
-export const usernameOptions: RegisterOptions<Inputs, "username"> = {
+export const usernameOptions: RegisterOptions<Inputs, "name"> = {
    minLength: {
       value: 3,
       message: "Username must contain at least 3 characters",
