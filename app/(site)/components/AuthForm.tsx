@@ -3,11 +3,8 @@
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input/Input";
 import { useCallback, useState } from "react";
-import {
-   FieldValues,
-   SubmitHandler,
-   useForm,
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues } from "./fields-form";
 import { AuthSocialButton } from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 
@@ -36,7 +33,7 @@ export function AuthForm() {
          password: "",
       },
    });
-
+   console.log(errors);
    const onSubmit: SubmitHandler<FieldValues> = (data) => {
       setIsLoading(true);
       if (variant === "REGISTER") {
@@ -52,7 +49,6 @@ export function AuthForm() {
 
       // Next Auth social signin
    };
-
    return (
       <div
          className="
@@ -70,7 +66,7 @@ export function AuthForm() {
                {variant === "REGISTER" && (
                   <Input
                      id="name"
-                     label="name"
+                     label="Name"
                      errors={errors}
                      register={register}
                      disabled={isLoading}
@@ -78,15 +74,16 @@ export function AuthForm() {
                )}
                <Input
                   id="email"
-                  label="email"
+                  label="Email"
                   type="email"
                   errors={errors}
                   register={register}
                   disabled={isLoading}
+                  required={true}
                />
                <Input
                   id="password"
-                  label="password"
+                  label="Password"
                   type="password"
                   errors={errors}
                   register={register}
