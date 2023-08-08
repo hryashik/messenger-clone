@@ -1,15 +1,14 @@
 "use client";
 
+import {
+   FieldValues,
+   formFieldsOptions,
+} from "@/app/(site)/options/fields-form";
 import clsx from "clsx";
 import {
    FieldErrors,
    UseFormRegister,
 } from "react-hook-form";
-import {
-   FieldValues,
-   emailOptions,
-   formFieldsOptions,
-} from "@/app/(site)/components/fields-form";
 
 interface InputProps {
    label: string;
@@ -65,11 +64,12 @@ export function Input({
                   focus:ring-sky-600 
                   sm:text-sm 
                   sm:leading-6`,
-                  errors[id] && "focus:ring-rose-600",
+                  errors[id]?.message &&
+                     "focus:ring-rose-600",
                   disabled && "opacity-50 cursor-default"
                )}
             />
-            <p className="text-rose-600 text-sm">
+            <p className="text-rose-600 text-sm mt-1">
                {errors[id]?.message}
             </p>
          </div>

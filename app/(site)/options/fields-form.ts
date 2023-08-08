@@ -15,7 +15,7 @@ export const emailOptions: RegisterOptions<
       value: RegExp(
          "^([a-z0-9_-]+.)*[a-z0-9_-]+@[a-z0-9_-]+(.[a-z0-9_-]+)*.[a-z]{2,6}$"
       ),
-      message: "Email must contain @ and .",
+      message: "Email only in English, must contain domain, @ and .",
    },
    minLength: {
       value: 6,
