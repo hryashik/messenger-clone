@@ -40,7 +40,7 @@ export function Input({
          <div className="mt-2">
             <input
                id={id}
-               type="text"
+               type={type}
                autoComplete={id}
                disabled={disabled}
                //@ts-ignore

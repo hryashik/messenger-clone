@@ -50,13 +50,33 @@ export function AuthForm() {
             .finally(() => setIsLoading(false));
       }
       if (variant === "LOGIN") {
-         
+         signIn("credentials", {
+            ...data,
+            redirect: false,
+         })
+            .then((response) => {
+               if (response?.error) {
+                  toast.error(response.error);
+               } else {
+                  toast.success("Logged in!");
+               }
+            })
+            .finally(() => setIsLoading(false));
       }
    };
 
-   const socialAction = (action: string) => {
+   const socialAction = (action: "github" | "google") => {
       setIsLoading(true);
-
+      signIn(action, { redirect: false }).then(
+         (response) => {
+            if (response?.error) {
+               toast.error('Invalid credentials')
+            }
+            if (response?.ok && !response?.error) {
+               toast.success('Logged in!')
+            }
+         }
+      );
       // Next Auth social signin
    };
    return (
