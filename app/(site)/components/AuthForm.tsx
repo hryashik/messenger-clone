@@ -7,8 +7,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { FieldValues } from "../options/fields-form";
 import { AuthSocialButton } from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -36,11 +37,20 @@ export function AuthForm() {
          axios
             .post("/api/register", data)
             .then(() => toast.success("Logged in!"))
-            .catch(() => toast.error("Something wrong"))
+            .catch((error: AxiosError) => {
+               if (error.response?.status === 403) {
+                  const msg =
+                     String(error.response?.data) ||
+                     "Credentials is taken";
+                  toast.error(msg);
+               } else {
+                  toast.error("Something wrong");
+               }
+            })
             .finally(() => setIsLoading(false));
       }
       if (variant === "LOGIN") {
-         // NextAuth SIgnin
+         
       }
    };
 
@@ -52,7 +62,7 @@ export function AuthForm() {
    return (
       <div
          className="
-            mt-8
+            mt-5
             sm:mx-auto
             sm:w-full
             sm:max-w-md
