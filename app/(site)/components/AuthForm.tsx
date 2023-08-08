@@ -2,20 +2,29 @@
 
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input/Input";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FieldValues } from "../options/fields-form";
 import { AuthSocialButton } from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Variant = "LOGIN" | "REGISTER";
 
 export function AuthForm() {
+   const session = useSession();
+   const router = useRouter();
    const [variant, setVariant] = useState<Variant>("LOGIN");
    const [isLoading, setIsLoading] = useState(false);
+
+   useEffect(() => {
+      if (session?.status === "authenticated") {
+         router.push("/users");
+      }
+   }, [session?.status, router]);
 
    const toggleVariant = useCallback(() => {
       if (variant === "LOGIN") {
@@ -36,7 +45,10 @@ export function AuthForm() {
       if (variant === "REGISTER") {
          axios
             .post("/api/register", data)
-            .then(() => toast.success("Logged in!"))
+            .then(() => {
+               toast.success('Logged in!')
+               signIn('credentials', data)
+            })
             .catch((error: AxiosError) => {
                if (error.response?.status === 403) {
                   const msg =
@@ -57,8 +69,10 @@ export function AuthForm() {
             .then((response) => {
                if (response?.error) {
                   toast.error(response.error);
-               } else {
+               }
+               if (response?.ok && !response.error) {
                   toast.success("Logged in!");
+                  router.push("/users");
                }
             })
             .finally(() => setIsLoading(false));
@@ -70,10 +84,10 @@ export function AuthForm() {
       signIn(action, { redirect: false }).then(
          (response) => {
             if (response?.error) {
-               toast.error('Invalid credentials')
+               toast.error("Invalid credentials");
             }
             if (response?.ok && !response?.error) {
-               toast.success('Logged in!')
+               toast.success("Logged in!");
             }
          }
       );
