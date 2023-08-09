@@ -85,7 +85,7 @@ function ConversationBox({
             rounded-lg
             transition
             cursor-pointer
-            py-3
+            p-3
          `,
             selected ? "bg-neutral-100" : "bg-white"
          )}

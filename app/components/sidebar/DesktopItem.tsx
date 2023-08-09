@@ -33,7 +33,7 @@ export default function DesktopItem({
                flex
                gap-x-3
                rounded-md
-               p-3
+               p-5
                text-sm
                leading-6
                font-semibold
