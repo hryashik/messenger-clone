@@ -6,24 +6,28 @@ import { Conversation, Message, User } from "@prisma/client";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
-import { FullConversationType } from "@/app/types";
-import useOtherUser from "@/app/hooks/useOtherUser";
+
 import Avatar from "@/app/components/Avatar";
+import useOtherUser from "@/app/hooks/useOtherUser";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import { FullConversationType } from "@/app/types";
 
 interface ConversationBoxProps {
    data: FullConversationType;
    selected?: boolean;
 }
 
-function ConversationBox({ data, selected }: ConversationBoxProps) {
+const ConversationBox: React.FC<ConversationBoxProps> = ({
+   data,
+   selected,
+}) => {
    const otherUser = useOtherUser(data);
    const session = useSession();
    const router = useRouter();
 
    const handleClick = useCallback(() => {
       router.push(`/conversations/${data.id}`);
-   }, [data.id, router]);
+   }, [data, router]);
 
    const lastMessage = useMemo(() => {
       const messages = data.messages || [];
@@ -31,9 +35,10 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
       return messages[messages.length - 1];
    }, [data.messages]);
 
-   const userEmail = useMemo(() => {
-      return session.data?.user?.email;
-   }, [session.data?.user?.email]);
+   const userEmail = useMemo(
+      () => session.data?.user?.email,
+      [session.data?.user?.email]
+   );
 
    const hasSeen = useMemo(() => {
       if (!lastMessage) {
@@ -46,7 +51,7 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
          return false;
       }
 
-      return seenArray.filter((user) => user.email !== userEmail).length !== 0;
+      return seenArray.filter((user) => user.email === userEmail).length !== 0;
    }, [userEmail, lastMessage]);
 
    const lastMessageText = useMemo(() => {
@@ -55,7 +60,7 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
       }
 
       if (lastMessage?.body) {
-         return lastMessage.body;
+         return lastMessage?.body;
       }
 
       return "Started a conversation";
@@ -66,17 +71,17 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
          onClick={handleClick}
          className={clsx(
             `
-            w-full
-            relative
-            flex
-            items-center
-            space-x-3
-            hover:bg-neutral-100
-            rounded-lg
-            transition
-            cursor-pointer
-            p-3
-         `,
+        w-full 
+        relative 
+        flex 
+        items-center 
+        space-x-3 
+        p-3 
+        hover:bg-neutral-100
+        rounded-lg
+        transition
+        cursor-pointer
+        `,
             selected ? "bg-neutral-100" : "bg-white"
          )}
       >
@@ -85,7 +90,6 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
          ) : (
             <Avatar user={otherUser} />
          )}
-
          <div className="min-w-0 flex-1">
             <div className="focus:outline-none">
                <span className="absolute inset-0" aria-hidden="true" />
@@ -96,9 +100,9 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
                   {lastMessage?.createdAt && (
                      <p
                         className="
-                           text-xs 
-                         text-gray-400 
-                           font-light
+                  text-xs 
+                  text-gray-400 
+                  font-light
                 "
                      >
                         {format(new Date(lastMessage.createdAt), "p")}
@@ -120,6 +124,6 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
          </div>
       </div>
    );
-}
+};
 
 export default ConversationBox;
