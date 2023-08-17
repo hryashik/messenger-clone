@@ -1,21 +1,20 @@
 "use client";
 
 import {
-   FieldValues,
+   FieldValues as FV,
    formFieldsOptions,
 } from "@/app/(site)/options/fields-form";
 import clsx from "clsx";
-import {
-   FieldErrors,
-   UseFormRegister,
-} from "react-hook-form";
+import { FieldErrors, UseFormRegister, FieldValues } from "react-hook-form";
+
+type RegisterType = UseFormRegister<FV> | UseFormRegister<FieldValues>;
 
 interface InputProps {
    label: string;
    id: "email" | "password" | "name";
    type?: string;
    required?: boolean;
-   register: UseFormRegister<FieldValues>;
+   register: RegisterType;
    errors: FieldErrors<FieldValues>;
    disabled?: boolean;
 }
@@ -64,12 +63,13 @@ export function Input({
                   focus:ring-sky-600 
                   sm:text-sm 
                   sm:leading-6`,
-                  errors[id]?.message &&
-                     "focus:ring-rose-600",
+                  errors[id]?.message && "focus:ring-rose-600",
                   disabled && "opacity-50 cursor-default"
                )}
             />
             <p className="text-rose-600 text-sm mt-1">
+               {/* 
+                  // @ts-ignore */}
                {errors[id]?.message}
             </p>
          </div>

@@ -26,6 +26,7 @@ const Avatar = ({ user }: AvatarProps) => {
                fill
                alt="Avatar"
                src={user?.image || "/images/placeholder.jpg"}
+               className="object-cover"
             />
          </div>
          <span
