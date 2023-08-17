@@ -2,27 +2,21 @@
 
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import {
-   Conversation,
-   Message,
-   User,
-} from "@prisma/client";
+import { Conversation, Message, User } from "@prisma/client";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import { FullConversationType } from "@/app/types";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
+import AvatarGroup from "@/app/components/AvatarGroup";
 
 interface ConversationBoxProps {
    data: FullConversationType;
    selected?: boolean;
 }
 
-function ConversationBox({
-   data,
-   selected,
-}: ConversationBoxProps) {
+function ConversationBox({ data, selected }: ConversationBoxProps) {
    const otherUser = useOtherUser(data);
    const session = useSession();
    const router = useRouter();
@@ -52,11 +46,7 @@ function ConversationBox({
          return false;
       }
 
-      return (
-         seenArray.filter(
-            (user) => user.email !== userEmail
-         ).length !== 0
-      );
+      return seenArray.filter((user) => user.email !== userEmail).length !== 0;
    }, [userEmail, lastMessage]);
 
    const lastMessageText = useMemo(() => {
@@ -90,13 +80,15 @@ function ConversationBox({
             selected ? "bg-neutral-100" : "bg-white"
          )}
       >
-         <Avatar user={otherUser} />
+         {data.isGroup ? (
+            <AvatarGroup users={data.users} />
+         ) : (
+            <Avatar user={otherUser} />
+         )}
+
          <div className="min-w-0 flex-1">
             <div className="focus:outline-none">
-               <span
-                  className="absolute inset-0"
-                  aria-hidden="true"
-               />
+               <span className="absolute inset-0" aria-hidden="true" />
                <div className="flex justify-between items-center mb-1">
                   <p className="text-md font-medium text-gray-900">
                      {data.name || otherUser.name}
@@ -109,10 +101,7 @@ function ConversationBox({
                            font-light
                 "
                      >
-                        {format(
-                           new Date(lastMessage.createdAt),
-                           "p"
-                        )}
+                        {format(new Date(lastMessage.createdAt), "p")}
                      </p>
                   )}
                </div>
@@ -122,9 +111,7 @@ function ConversationBox({
               truncate 
               text-sm
               `,
-                     hasSeen
-                        ? "text-gray-500"
-                        : "text-black font-medium"
+                     hasSeen ? "text-gray-500" : "text-black font-medium"
                   )}
                >
                   {lastMessageText}
