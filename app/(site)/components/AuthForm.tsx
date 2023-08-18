@@ -46,14 +46,13 @@ export function AuthForm() {
          axios
             .post("/api/register", data)
             .then(() => {
-               toast.success('Logged in!')
-               signIn('credentials', data)
+               toast.success("Logged in!");
+               signIn("credentials", data).then(() => router.push("/users"));
             })
             .catch((error: AxiosError) => {
                if (error.response?.status === 403) {
                   const msg =
-                     String(error.response?.data) ||
-                     "Credentials is taken";
+                     String(error.response?.data) || "Credentials is taken";
                   toast.error(msg);
                } else {
                   toast.error("Something wrong");
@@ -81,16 +80,14 @@ export function AuthForm() {
 
    const socialAction = (action: "github" | "google") => {
       setIsLoading(true);
-      signIn(action, { redirect: false }).then(
-         (response) => {
-            if (response?.error) {
-               toast.error("Invalid credentials");
-            }
-            if (response?.ok && !response?.error) {
-               toast.success("Logged in!");
-            }
+      signIn(action, { redirect: false }).then((response) => {
+         if (response?.error) {
+            toast.error("Invalid credentials");
          }
-      );
+         if (response?.ok && !response?.error) {
+            toast.success("Logged in!");
+         }
+      });
       // Next Auth social signin
    };
    return (
@@ -103,10 +100,7 @@ export function AuthForm() {
          "
       >
          <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-            <form
-               onSubmit={handleSubmit(onSubmit)}
-               className="space-y-6"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                {variant === "REGISTER" && (
                   <Input
                      id="name"
@@ -134,14 +128,8 @@ export function AuthForm() {
                   disabled={isLoading}
                />
                <div>
-                  <Button
-                     disabled={isLoading}
-                     fullWidth
-                     type="submit"
-                  >
-                     {variant === "LOGIN"
-                        ? "Sign in"
-                        : "Register"}
+                  <Button disabled={isLoading} fullWidth type="submit">
+                     {variant === "LOGIN" ? "Sign in" : "Register"}
                   </Button>
                </div>
             </form>
@@ -207,9 +195,7 @@ export function AuthForm() {
                   onClick={toggleVariant}
                   className="underline cursor-pointer"
                >
-                  {variant === "LOGIN"
-                     ? "Create and account"
-                     : "Login"}
+                  {variant === "LOGIN" ? "Create and account" : "Login"}
                </div>
             </div>
          </div>

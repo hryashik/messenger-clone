@@ -28,7 +28,7 @@ const useRoutes = () => {
       {
         label: 'Logout', 
         onClick: () => signOut(),
-        href: '#',
+        href: '/',
         icon: HiArrowLeftOnRectangle, 
       }
     ], [pathname, conversationId]);
