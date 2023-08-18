@@ -23,6 +23,7 @@ export default function DesktopItem({
          return onClick();
       }
    };
+   if (label === "Settings") return <></>
    return (
       <li onClick={handleClick}>
          <Link

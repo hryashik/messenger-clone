@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useParams, usePathname } from "next/navigation";
 import { HiChat } from "react-icons/hi";
+import {AiOutlineSetting} from 'react-icons/ai'
 import {
    HiArrowLeftOnRectangle,
    HiUsers,
@@ -24,6 +25,11 @@ const useRoutes = () => {
         href: '/users', 
         icon: HiUsers, 
         active: pathname === '/users'
+      },
+      {
+        label: "Settings",
+        icon: AiOutlineSetting,
+        href: '#'
       },
       {
         label: 'Logout', 

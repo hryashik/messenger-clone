@@ -31,10 +31,12 @@ const MobileItem = ({
             group
             flex
             gap-x-3
-            text-sm
+            text-xl
             leading-6
+            h-20
             font-semibold
             w-full
+            items-center
             justify-center
             p-4
             text-gray-500
