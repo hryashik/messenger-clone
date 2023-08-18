@@ -5,7 +5,10 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/libs/prismadb";
+<<<<<<< HEAD
 import { NextResponse } from "next/server";
+=======
+>>>>>>> dev
 
 export const authOptions: AuthOptions = {
    adapter: PrismaAdapter(prisma),
@@ -16,16 +19,34 @@ export const authOptions: AuthOptions = {
       }),
       GoogleProvider({
          clientId: process.env.GOOGLE_CLIENT_ID as string,
+<<<<<<< HEAD
          clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+=======
+         clientSecret: process.env
+            .GOOGLE_CLIENT_SECRET as string,
+>>>>>>> dev
       }),
       CredentialsProvider({
          name: "credentials",
          credentials: {
             email: { label: "email", type: "text" },
+<<<<<<< HEAD
             password: { label: "password", type: "password" },
          },
          async authorize(credentials) {
             if (!credentials?.email || !credentials?.password) {
+=======
+            password: {
+               label: "password",
+               type: "password",
+            },
+         },
+         async authorize(credentials) {
+            if (
+               !credentials?.email ||
+               !credentials?.password
+            ) {
+>>>>>>> dev
                throw new Error("Invalid Credentials");
             }
 
@@ -34,20 +55,32 @@ export const authOptions: AuthOptions = {
                   email: credentials.email,
                },
             });
+<<<<<<< HEAD
 
             if (!user || !user?.hashedPassword) {
                throw new Error("Invalid credentials");
             }
 
+=======
+            if (!user || !user?.hashedPassword) {
+               throw new Error("Invalid credentials");
+            }
+>>>>>>> dev
             const isCorrectPassword = await bcrypt.compare(
                credentials.password,
                user.hashedPassword
             );
+<<<<<<< HEAD
 
             if (!isCorrectPassword) {
                throw new Error("Invalid credentials");
             }
 
+=======
+            if (!isCorrectPassword) {
+               throw new Error("invalid credentials");
+            }
+>>>>>>> dev
             return user;
          },
       }),

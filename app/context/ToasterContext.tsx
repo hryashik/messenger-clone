@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 import { Toaster } from "react-hot-toast"
 
@@ -6,3 +7,14 @@ export const ToasterContext = () => {
         <Toaster />
     )
 }
+=======
+"use client";
+
+import { Toaster } from "react-hot-toast";
+
+export const ToasterContext = () => {
+   return (
+      <Toaster />
+   )
+}
+>>>>>>> dev

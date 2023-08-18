@@ -1,7 +1,18 @@
+<<<<<<< HEAD
 import { AuthContext } from "./context/AuthContext";
 import { ToasterContext } from "./context/ToasterContext";
 import "./globals.scss";
 import type { Metadata } from "next";
+=======
+import "./globals.scss";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ToasterContext } from "./context/ToasterContext";
+import { AuthContext } from "./context/AuthContext";
+import ActiveStatus from "./components/ActiveStatus";
+
+const inter = Inter({ subsets: ["latin"] });
+>>>>>>> dev
 
 export const metadata: Metadata = {
    title: "Messenger Clone",
@@ -15,6 +26,7 @@ export default function RootLayout({
 }) {
    return (
       <html lang="en">
+<<<<<<< HEAD
          <head>
             <link
                rel="stylesheet"
@@ -24,6 +36,12 @@ export default function RootLayout({
          <body>
             <AuthContext>
                <ToasterContext />
+=======
+         <body className={inter.className}>
+            <AuthContext>
+               <ToasterContext />
+               <ActiveStatus />
+>>>>>>> dev
                {children}
             </AuthContext>
          </body>

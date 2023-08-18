@@ -1,5 +1,14 @@
 {
+<<<<<<< HEAD
    "printWidth": 80,
    "arrowParens": "avoid",
    "tabWidth": 3
+=======
+    "tabWidth": 3,
+    "useTabs": false,
+    "trailingComma": "es5",
+    "semi": true,
+    "printWidth": 80,
+    "bracketSameLine": false
+>>>>>>> dev
 }
